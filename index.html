@@ -4,17 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Site vitrine - Optimisé</title>
+  
+  <!-- Preconnect pour Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- CSS -->
   <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Preload des images critiques (hero) si nécessaire -->
+  <!-- <link rel="preload" as="image" href="img/hero-bg.jpg"> -->
 </head>
 <body>
   <div class="topbar">
     <div class="container nav">
       <div class="logo">Slow<span>Site</span></div>
-      <div class="menu">
+      <nav class="menu">
         <a href="#galerie">Galerie</a>
         <a href="#defis">Défis</a>
         <a href="#apropos">À propos</a>
-      </div>
+      </nav>
     </div>
   </div>
 
@@ -33,22 +42,34 @@
       <h2>Galerie</h2>
       <div class="grid">
         <div class="card">
-          <a href="img1.html"><img src="img/img1.jpg" alt="Image 1" loading="lazy"></a>
+          <a href="img1.html">
+            <img src="img/img1.jpg" alt="Image 1" loading="lazy" width="400" height="300">
+          </a>
         </div>
         <div class="card">
-          <a href="img2.html"><img src="img/img2.jpg" alt="Image 2" loading="lazy"></a>
+          <a href="img2.html">
+            <img src="img/img2.jpg" alt="Image 2" loading="lazy" width="400" height="300">
+          </a>
         </div>
         <div class="card">
-          <a href="img3.html"><img src="img/img3.jpg" alt="Image 3" loading="lazy"></a>
+          <a href="img3.html">
+            <img src="img/img3.jpg" alt="Image 3" loading="lazy" width="400" height="300">
+          </a>
         </div>
         <div class="card">
-          <a href="img4.html"><img src="img/img4.jpg" alt="Image 4" loading="lazy"></a>
+          <a href="img4.html">
+            <img src="img/img4.jpg" alt="Image 4" loading="lazy" width="400" height="300">
+          </a>
         </div>
         <div class="card">
-          <a href="img5.html"><img src="img/img5.jpg" alt="Image 5" loading="lazy"></a>
+          <a href="img5.html">
+            <img src="img/img5.jpg" alt="Image 5" loading="lazy" width="400" height="300">
+          </a>
         </div>
         <div class="card">
-          <a href="img6.html"><img src="img/img6.jpg" alt="Image 6" loading="lazy"></a>
+          <a href="img6.html">
+            <img src="img/img6.jpg" alt="Image 6" loading="lazy" width="400" height="300">
+          </a>
         </div>
       </div>
     </div>
@@ -59,22 +80,22 @@
       <h2>Fonctionnalités</h2>
       <div class="features-grid">
         <div class="feature">
-          <div class="icon">⚡</div>
+          <div class="icon" aria-hidden="true">⚡</div>
           <h3>Design moderne</h3>
           <p>Couleurs, ombres, grille responsive.</p>
         </div>
         <div class="feature">
-          <div class="icon">🧱</div>
+          <div class="icon" aria-hidden="true">🧱</div>
           <h3>Scripts</h3>
           <p>Intégration de scripts pour effets visuels.</p>
         </div>
         <div class="feature">
-          <div class="icon">🖼️</div>
+          <div class="icon" aria-hidden="true">🖼️</div>
           <h3>Images</h3>
           <p>Galerie de visuels variés.</p>
         </div>
         <div class="feature">
-          <div class="icon">🔠</div>
+          <div class="icon" aria-hidden="true">🔠</div>
           <h3>Polices</h3>
           <p>Typographie soignée.</p>
         </div>
@@ -95,19 +116,19 @@
     </div>
   </div>
 
-  <div class="footer">
+  <footer class="footer">
     <div class="container">
       <p>TD Optimisation du temps de chargement d'un site web</p>
       <p>© 2025 – BUT MMI Béziers - MAURIN N.</p>
     </div>
-  </div>
+  </footer>
 
   <div id="perf-panel">
     <div class="perf-header">
       <strong>Évaluation perfs</strong>
       <div>
-        <button id="perf-refresh" class="perf-btn">Mesurer</button>
-        <button id="perf-close" class="perf-close">×</button>
+        <button id="perf-refresh" class="perf-btn" type="button">Mesurer</button>
+        <button id="perf-close" class="perf-close" type="button" aria-label="Fermer">×</button>
       </div>
     </div>
     <div class="perf-grid">
@@ -123,6 +144,7 @@
     </div>
   </div>
 
+  <!-- Scripts chargés en fin de body pour ne pas bloquer le rendu -->
   <script src="js/metrics.js"></script>
   <script src="js/script.js"></script>
 </body>
