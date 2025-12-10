@@ -1,10 +1,10 @@
 (function(){
-  // Suppression des busy-waits synchrones et génération de "work" en tâches non bloquantes.
+  // Suppression des boucles bloquantes et génération de "work" en tâches non bloquantes.
 
-  // Génère une charge simulée en petits chunks pendant les périodes d'inactivité
+  // Si le code d'origine créait une "charge" pour test, on la remplace par un traitement par chunks
   function generateWork(total = 200000, chunkSize = 5000) {
     let i = 0;
-    // garder localement pour éviter fuite globale ; on libérera ensuite
+    // buffer local, libéré quand terminé
     const buf = [];
     function doChunk(deadline) {
       const end = Math.min(i + chunkSize, total);
@@ -13,28 +13,39 @@
       }
       if (i < total) {
         if (typeof requestIdleCallback === 'function') {
-          requestIdleCallback(doChunk, { timeout: 500 });
+          requestIdleCallback(doChunk, { timeout: 200 });
         } else {
           setTimeout(doChunk, 0);
         }
       } else {
-        // Travail terminé — libérer la mémoire rapidement pour ne pas garder un gros tableau
-        setTimeout(() => { buf.length = 0; }, 1000);
+        // libération mémoire rapide
+        setTimeout(() => { buf.length = 0; }, 500);
       }
     }
-    if (typeof requestIdleCallback === 'function') requestIdleCallback(doChunk, { timeout: 500 });
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(doChunk, { timeout: 200 });
     else setTimeout(doChunk, 0);
   }
 
-  // Non-bloquant : marquer images comme lazy et appliquer la classe 'loaded' quand prêtes
+  // Non-bloquant : marquer images comme lazy et appliquer la classe 'loaded' après décodage
   function initImages() {
     const imgs = document.querySelectorAll('.card img');
     imgs.forEach(img => {
       try { img.setAttribute('loading', 'lazy'); } catch(e) {}
       if (img.complete) {
-        img.classList.add('loaded');
+        // attempt decode to ensure the image is actually painted before marking loaded
+        if (img.decode) {
+          img.decode().then(()=> img.classList.add('loaded')).catch(()=> img.classList.add('loaded'));
+        } else {
+          img.classList.add('loaded');
+        }
       } else {
-        img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+        img.addEventListener('load', () => {
+          if (img.decode) {
+            img.decode().then(()=> img.classList.add('loaded')).catch(()=> img.classList.add('loaded'));
+          } else {
+            img.classList.add('loaded');
+          }
+        }, { once: true });
       }
     });
   }
@@ -47,7 +58,7 @@
   }
 
   window.addEventListener('load', () => {
-    // Ne pas bloquer : générer la charge en arrière-plan par chunks
+    // Génération de charge en arrière-plan; si c'était juste du test, vous pouvez commenter cette ligne.
     generateWork(200000, 5000);
   });
 })();
